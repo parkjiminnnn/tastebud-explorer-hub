@@ -10,7 +10,7 @@ const Map = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
-  // Mock restaurant data with coordinates
+  // Expanded mock restaurant data with coordinates
   const restaurants = [
     {
       id: 1,
@@ -50,6 +50,97 @@ const Map = () => {
       lat: 37.5735,
       lng: 126.9847,
       image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=300&h=200&fit=crop'
+    },
+    {
+      id: 4,
+      name: '전통 일식집',
+      category: '일식',
+      rating: 4.6,
+      reviewCount: 67,
+      address: '서울시 서초구 서초동',
+      distance: '2.1km',
+      availableSeats: 0,
+      lat: 37.4849,
+      lng: 127.0164,
+      image: 'https://images.unsplash.com/photo-1579027989054-b72d69ae8b5c?w=300&h=200&fit=crop'
+    },
+    {
+      id: 5,
+      name: '중화요리 맛집',
+      category: '중식',
+      rating: 4.4,
+      reviewCount: 156,
+      address: '서울시 용산구 이태원동',
+      distance: '1.5km',
+      availableSeats: 8,
+      lat: 37.5344,
+      lng: 126.9945,
+      image: 'https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=300&h=200&fit=crop'
+    },
+    {
+      id: 6,
+      name: '프렌치 비스트로',
+      category: '양식',
+      rating: 4.7,
+      reviewCount: 92,
+      address: '서울시 성동구 성수동',
+      distance: '2.3km',
+      availableSeats: 5,
+      lat: 37.5447,
+      lng: 127.0557,
+      image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300&h=200&fit=crop'
+    },
+    {
+      id: 7,
+      name: '서울식 냉면집',
+      category: '한식',
+      rating: 4.2,
+      reviewCount: 234,
+      address: '서울시 중구 명동',
+      distance: '1.8km',
+      availableSeats: 15,
+      lat: 37.5636,
+      lng: 126.9834,
+      image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=300&h=200&fit=crop'
+    },
+    {
+      id: 8,
+      name: '힙스터 브런치 카페',
+      category: '카페',
+      rating: 4.6,
+      reviewCount: 178,
+      address: '서울시 마포구 합정동',
+      distance: '1.1km',
+      availableSeats: 9,
+      lat: 37.5503,
+      lng: 126.9138,
+      image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&h=200&fit=crop'
+    },
+    {
+      id: 9,
+      name: '전통 술집',
+      category: '술집',
+      rating: 4.3,
+      reviewCount: 87,
+      address: '서울시 종로구 종로3가',
+      distance: '1.9km',
+      availableSeats: 6,
+      lat: 37.5703,
+      lng: 126.9911,
+      image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&h=200&fit=crop'
+    },
+    {
+      id: 10,
+      name: '타이 레스토랑',
+      category: '아시안',
+      rating: 4.5,
+      reviewCount: 143,
+      address: '서울시 강남구 신사동',
+      distance: '0.9km',
+      availableSeats: 11,
+      lat: 37.5237,
+      lng: 127.0202,
+      image: 'https://images.unsplash.com/photo-1559847844-d558cfc41b1d?w=300&h=200&fit=crop'
     }
   ];
 
@@ -141,33 +232,51 @@ const Map = () => {
 
         {/* Map Area */}
         <div className="flex-1 relative">
-          {/* 실제 환경에서는 여기에 Google Maps나 Naver Maps API를 연동합니다 */}
-          <div className="w-full h-full bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center relative">
-            <div className="text-center">
-              <MapPin className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">지도 영역</h3>
-              <p className="text-gray-600">실제 서비스에서는 여기에 지도가 표시됩니다</p>
-            </div>
+          {/* 실제 지도 이미지 */}
+          <div className="w-full h-full relative overflow-hidden">
+            <img 
+              src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&h=800&fit=crop" 
+              alt="서울 지도"
+              className="w-full h-full object-cover"
+            />
+            
+            {/* Map overlay with gradient */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
 
             {/* Mock Map Markers */}
             <div className="absolute inset-0">
               {restaurants.map((restaurant, index) => (
                 <div
                   key={restaurant.id}
-                  className={`absolute w-6 h-6 rounded-full flex items-center justify-center cursor-pointer transform -translate-x-1/2 -translate-y-1/2 ${
+                  className={`absolute w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transform -translate-x-1/2 -translate-y-1/2 shadow-lg ${
                     selectedRestaurant?.id === restaurant.id 
-                      ? 'bg-orange-500 scale-125' 
+                      ? 'bg-orange-500 scale-125 ring-4 ring-white' 
                       : 'bg-red-500 hover:bg-red-600'
                   } transition-all duration-200`}
                   style={{
-                    left: `${30 + index * 20}%`,
-                    top: `${40 + index * 15}%`
+                    left: `${20 + (index % 4) * 20}%`,
+                    top: `${25 + Math.floor(index / 4) * 15}%`
                   }}
                   onClick={() => setSelectedRestaurant(restaurant)}
                 >
                   <span className="text-white text-xs font-bold">{index + 1}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Map Legend */}
+            <div className="absolute top-6 right-6 bg-white rounded-lg shadow-lg p-4">
+              <h4 className="font-semibold text-gray-900 mb-2">범례</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
+                  <span>식당 위치</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-orange-500 rounded-full mr-2"></div>
+                  <span>선택된 식당</span>
+                </div>
+              </div>
             </div>
 
             {/* Selected Restaurant Info */}

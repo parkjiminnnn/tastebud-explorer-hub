@@ -10,7 +10,7 @@ const Restaurants = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('전체');
 
-  const categories = ['전체', '한식', '중식', '일식', '양식', '카페', '술집'];
+  const categories = ['전체', '한식', '중식', '일식', '양식', '카페', '술집', '아시안'];
 
   const restaurants = [
     {
@@ -68,6 +68,118 @@ const Restaurants = () => {
       image: 'https://images.unsplash.com/photo-1579027989054-b72d69ae8b5c?w=400&h=250&fit=crop',
       priceRange: '₩30,000 - ₩50,000',
       openNow: false
+    },
+    {
+      id: 5,
+      name: '중화요리 맛집',
+      category: '중식',
+      rating: 4.4,
+      reviewCount: 156,
+      address: '서울시 용산구 이태원동',
+      distance: '1.5km',
+      waitingTime: '15분',
+      availableSeats: 8,
+      image: 'https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=400&h=250&fit=crop',
+      priceRange: '₩18,000 - ₩30,000',
+      openNow: true
+    },
+    {
+      id: 6,
+      name: '프렌치 비스트로',
+      category: '양식',
+      rating: 4.7,
+      reviewCount: 92,
+      address: '서울시 성동구 성수동',
+      distance: '2.3km',
+      waitingTime: '없음',
+      availableSeats: 5,
+      image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop',
+      priceRange: '₩35,000 - ₩55,000',
+      openNow: true
+    },
+    {
+      id: 7,
+      name: '서울식 냉면집',
+      category: '한식',
+      rating: 4.2,
+      reviewCount: 234,
+      address: '서울시 중구 명동',
+      distance: '1.8km',
+      waitingTime: '5분',
+      availableSeats: 15,
+      image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=250&fit=crop',
+      priceRange: '₩12,000 - ₩18,000',
+      openNow: true
+    },
+    {
+      id: 8,
+      name: '힙스터 브런치 카페',
+      category: '카페',
+      rating: 4.6,
+      reviewCount: 178,
+      address: '서울시 마포구 합정동',
+      distance: '1.1km',
+      waitingTime: '10분',
+      availableSeats: 9,
+      image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=250&fit=crop',
+      priceRange: '₩15,000 - ₩25,000',
+      openNow: true
+    },
+    {
+      id: 9,
+      name: '전통 술집',
+      category: '술집',
+      rating: 4.3,
+      reviewCount: 87,
+      address: '서울시 종로구 종로3가',
+      distance: '1.9km',
+      waitingTime: '없음',
+      availableSeats: 6,
+      image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=250&fit=crop',
+      priceRange: '₩20,000 - ₩35,000',
+      openNow: true
+    },
+    {
+      id: 10,
+      name: '타이 레스토랑',
+      category: '아시안',
+      rating: 4.5,
+      reviewCount: 143,
+      address: '서울시 강남구 신사동',
+      distance: '0.9km',
+      waitingTime: '12분',
+      availableSeats: 11,
+      image: 'https://images.unsplash.com/photo-1559847844-d558cfc41b1d?w=400&h=250&fit=crop',
+      priceRange: '₩22,000 - ₩38,000',
+      openNow: true
+    },
+    {
+      id: 11,
+      name: '고급 스시집',
+      category: '일식',
+      rating: 4.9,
+      reviewCount: 45,
+      address: '서울시 강남구 청담동',
+      distance: '3.2km',
+      waitingTime: '30분',
+      availableSeats: 0,
+      image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=250&fit=crop',
+      priceRange: '₩80,000 - ₩120,000',
+      openNow: true
+    },
+    {
+      id: 12,
+      name: '로컬 피자집',
+      category: '양식',
+      rating: 4.1,
+      reviewCount: 298,
+      address: '서울시 서대문구 홍제동',
+      distance: '2.8km',
+      waitingTime: '없음',
+      availableSeats: 18,
+      image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=250&fit=crop',
+      priceRange: '₩20,000 - ₩35,000',
+      openNow: true
     }
   ];
 
