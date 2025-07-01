@@ -1,14 +1,16 @@
-
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Star, MapPin, Clock, Users, Camera, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ReviewForm from '@/components/ReviewForm';
 
 const RestaurantDetail = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [userType, setUserType] = useState('blogger'); // Mock user type - in real app, this would come from auth
 
   // Mock data - 실제로는 API에서 가져올 데이터
   const restaurant = {
@@ -44,7 +46,7 @@ const RestaurantDetail = () => {
     ]
   };
 
-  const reviews = [
+  const [reviews, setReviews] = useState([
     {
       id: 1,
       user: '박지민',
@@ -59,7 +61,8 @@ const RestaurantDetail = () => {
       rating: 4,
       date: '2024-01-10',
       comment: '분위기도 좋고 음식도 정갈해요. 블로그에 리뷰 올릴 예정입니다.',
-      images: []
+      images: [],
+      blogLink: 'https://food-blog.com/korean-restaurant-review'
     },
     {
       id: 3,
@@ -69,7 +72,31 @@ const RestaurantDetail = () => {
       comment: '사장님이 정말 친절하시고 음식도 맛있어요. 재방문 의사 100%',
       images: []
     }
-  ];
+  ]);
+
+  const handleReviewSubmit = (reviewData: any) => {
+    const newReview = {
+      ...reviewData,
+      id: reviews.length + 1
+    };
+    setReviews([newReview, ...reviews]);
+    setShowReviewForm(false);
+    alert('리뷰가 성공적으로 등록되었습니다!');
+  };
+
+  if (showReviewForm) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-4xl mx-auto px-4">
+          <ReviewForm
+            onSubmit={handleReviewSubmit}
+            onCancel={() => setShowReviewForm(false)}
+            userType={userType}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -94,7 +121,11 @@ const RestaurantDetail = () => {
                 <Camera className="mr-2 h-4 w-4" />
                 사진
               </Button>
-              <Button variant="outline" className="border-gray-300">
+              <Button 
+                variant="outline" 
+                className="border-gray-300"
+                onClick={() => setShowReviewForm(true)}
+              >
                 <Edit className="mr-2 h-4 w-4" />
                 리뷰 작성
               </Button>
@@ -232,7 +263,23 @@ const RestaurantDetail = () => {
                             <span className="text-sm text-gray-500">{review.date}</span>
                           </div>
                           <p className="text-gray-600 mb-3">{review.comment}</p>
-                          {review.images.length > 0 && (
+                          
+                          {/* Blog Link Display */}
+                          {review.blogLink && (
+                            <div className="mb-3">
+                              <a 
+                                href={review.blogLink} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                              >
+                                <LinkIcon className="h-3 w-3 mr-1" />
+                                블로그에서 전체 리뷰 보기
+                              </a>
+                            </div>
+                          )}
+                          
+                          {review.images && review.images.length > 0 && (
                             <div className="flex gap-2">
                               {review.images.map((image, index) => (
                                 <img

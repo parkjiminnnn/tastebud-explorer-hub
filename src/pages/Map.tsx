@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Star, Users, Search } from 'lucide-react';
@@ -141,6 +140,32 @@ const Map = () => {
       lat: 37.5237,
       lng: 127.0202,
       image: 'https://images.unsplash.com/photo-1559847844-d558cfc41b1d?w=300&h=200&fit=crop'
+    },
+    {
+      id: 11,
+      name: '고급 스테이크 하우스',
+      category: '양식',
+      rating: 4.9,
+      reviewCount: 73,
+      address: '서울시 강남구 청담동',
+      distance: '1.7km',
+      availableSeats: 2,
+      lat: 37.5172,
+      lng: 127.0473,
+      image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300&h=200&fit=crop'
+    },
+    {
+      id: 12,
+      name: '현대식 한정식',
+      category: '한식',
+      rating: 4.8,
+      reviewCount: 95,
+      address: '서울시 서대문구 신촌동',
+      distance: '2.5km',
+      availableSeats: 4,
+      lat: 37.5596,
+      lng: 126.9370,
+      image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=300&h=200&fit=crop'
     }
   ];
 
@@ -232,10 +257,10 @@ const Map = () => {
 
         {/* Map Area */}
         <div className="flex-1 relative">
-          {/* 실제 지도 이미지 */}
+          {/* 서울 지도 이미지 */}
           <div className="w-full h-full relative overflow-hidden">
             <img 
-              src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&h=800&fit=crop" 
+              src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&h=800&fit=crop" 
               alt="서울 지도"
               className="w-full h-full object-cover"
             />
