@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Star, MapPin, Clock, Users, Camera, Edit } from 'lucide-react';
+import { ArrowLeft, Star, MapPin, Clock, Users, Camera, Edit, Link as LinkIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
