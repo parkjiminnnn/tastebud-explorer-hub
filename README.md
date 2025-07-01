@@ -1,73 +1,89 @@
-# Welcome to your Lovable project
+# 🍽️ 상황별 맞춤형 맛집 추천 및 예약 플랫폼
 
-## Project info
+> **배포 URL**: https://tastebud-explorer-hub.lovable.app
 
-**URL**: https://lovable.dev/projects/9a34880d-34d0-4500-bdea-81ac65181b4d
+---
 
-## How can I edit this code?
+## 🧩 프로젝트 개요
 
-There are several ways of editing your application.
+**Lovable**은 직장인, 자영업자, 블로거 등 다양한 사용자 유형의 니즈에 맞춘 **맛집 탐색·예약·홍보 통합 플랫폼**입니다.  
+실시간 테이블 정보, 지역 기반 추천, 리뷰 기반 피드백, 방문 인증 기능 등으로 사용자의 목적에 딱 맞는 경험을 제공합니다.
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9a34880d-34d0-4500-bdea-81ac65181b4d) and start prompting.
+## 👥 페르소나 및 사용자 시나리오
 
-Changes made via Lovable will be committed automatically to this repo.
+### 1. 직장인 – 박지민 (29세)
 
-**Use your preferred IDE**
+- **목표**: 직장 점심시간 안에 맛집에서 밥을 먹고 싶다.
+- **니즈**: 실시간 테이블 자리 정보, 식당 위치, 메뉴 정보, 별점, 웨이팅 공간 유무  
+- **사용 시나리오**:  
+  박지민씨는 Lovable 앱을 실행하고 원하는 메뉴 카테고리를 선택합니다. 식당 상세 정보를 확인하고, 실시간으로 남은 테이블 수를 확인한 후 바로 예약하여 점심시간 내에 식사를 해결합니다.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+**✅ 사용자 스토리**  
+> "직장인으로서, 점심시간 안에 식당을 빠르게 선택하고 예약하고 싶어요. 그래야 여유롭게 식사를 하고 다시 업무에 집중할 수 있거든요."
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+**✅ 인수 조건 (GWT)**  
+```
+Given: 사용자가 Lovable 앱에 접속했을 때  
+When: 메뉴 카테고리를 선택하고 추천 요청을 보냈을 때  
+Then: 현재 위치 기반으로 10분 거리 이내 식당 중, 잔여 테이블이 있는 곳만 추천한다
 ```
 
-**Edit a file directly in GitHub**
+```
+Given: 사용자가 특정 식당을 선택했을 때  
+When: 상세 페이지에 접근했을 때  
+Then: 실시간 테이블 수, 인기 메뉴, 웨이팅 공간 유무가 3초 이내에 로드되어야 한다
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+### 2. 자영업자 – 임준혁 (43세)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **목표**: 자신의 식당 매출을 올리고 가게를 홍보하고 싶다.
+- **니즈**: 예약 현황, 리뷰 기반 피드백, 하루 방문자 수 평균  
+- **사용 시나리오**:  
+  임준혁씨는 매일 아침 Lovable 관리자 페이지에서 어제 받은 리뷰와 별점을 확인하고, 피드백을 통해 서비스 개선에 활용합니다. 방문자 수 평균을 바탕으로 당일 준비할 음식량을 조정합니다.
 
-## What technologies are used for this project?
+**✅ 사용자 스토리**  
+> "자영업자로서, 리뷰와 방문 통계를 통해 식당 운영을 최적화하고 싶어요. 그래야 재고 낭비 없이 손님 응대를 더 잘할 수 있거든요."
 
-This project is built with:
+**✅ 인수 조건 (GWT)**  
+```
+Given: 자영업자 계정으로 로그인했을 때  
+When: 관리자 대시보드에 접속했을 때  
+Then: 최근 일주일 방문자 수와 리뷰 목록이 함께 제공된다
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+Given: 리뷰가 등록되었을 때  
+When: 자영업자가 해당 리뷰를 확인했을 경우  
+Then: 별점 평균과 텍스트 피드백이 함께 출력되어야 한다
+```
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/9a34880d-34d0-4500-bdea-81ac65181b4d) and click on Share -> Publish.
+### 3. 맛집 블로거 – 장은영 (32세)
 
-## Can I connect a custom domain to my Lovable project?
+- **목표**: 신뢰도 높은 맛집 리뷰로 블로그 구독자와 노출을 늘리고 싶다.
+- **니즈**: 식당 위치, 식당 정보, 리뷰 작성 기능  
+- **사용 시나리오**:  
+  장은영씨는 앱에서 지역 기반으로 맛집을 탐색하고, 방문 후 직접 리뷰를 남깁니다. 솔직한 후기를 통해 자신의 블로그 콘텐츠로도 활용합니다.
 
-Yes, you can!
+**✅ 사용자 스토리**  
+> "맛집 블로거로서, 신뢰도 높은 맛집을 탐색하고 진짜 후기를 남기고 싶어요. 그래야 제 블로그에도 사람들이 더 많이 찾아와요."
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+**✅ 인수 조건 (GWT)**  
+```
+Given: 사용자가 블로거 계정으로 로그인했을 때  
+When: 맛집 탐색 요청을 했을 경우  
+Then: 지역별로 등록된 식당 리스트가 지도와 함께 제공된다
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```
+Given: 사용자가 식당 방문 후 체크인했을 때  
+When: 리뷰 작성을 완료하고 등록했을 경우  
+Then: 본인의 블로그 링크를 함께 첨부할 수 있어야 한다
+```
+
+---
