@@ -1,17 +1,21 @@
-
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Star, MapPin, Clock, Users, Camera, Edit, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft, Star, MapPin, Clock, Users, Camera, Edit, Link as LinkIcon, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
+import { useFavorites } from '@/hooks/useFavorites';
 import ReviewForm from '@/components/ReviewForm';
 
 const RestaurantDetail = () => {
   const { id } = useParams();
+  const restaurantId = parseInt(id || '1');
   const [activeTab, setActiveTab] = useState('overview');
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const [userType, setUserType] = useState('blogger'); // Mock user type - in real app, this would come from auth
+  const [userType, setUserType] = useState('blogger');
+  const { toast } = useToast();
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   // Mock data - 실제로는 API에서 가져올 데이터
   const restaurant = {
@@ -75,6 +79,18 @@ const RestaurantDetail = () => {
     }
   ]);
 
+  const handleFavoriteToggle = () => {
+    const wasAlreadyFavorite = isFavorite(restaurantId);
+    toggleFavorite(restaurantId);
+    
+    toast({
+      title: wasAlreadyFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가",
+      description: wasAlreadyFavorite 
+        ? `${restaurant.name}을(를) 즐겨찾기에서 제거했습니다.`
+        : `${restaurant.name}을(를) 즐겨찾기에 추가했습니다.`,
+    });
+  };
+
   const handleReviewSubmit = (reviewData: any) => {
     const newReview = {
       ...reviewData,
@@ -118,6 +134,14 @@ const RestaurantDetail = () => {
               </div>
             </div>
             <div className="flex items-center space-x-3">
+              <Button 
+                variant="outline" 
+                className={`border-gray-300 ${isFavorite(restaurantId) ? 'bg-red-50 border-red-300 text-red-600' : ''}`}
+                onClick={handleFavoriteToggle}
+              >
+                <Heart className={`mr-2 h-4 w-4 ${isFavorite(restaurantId) ? 'fill-current text-red-500' : ''}`} />
+                {isFavorite(restaurantId) ? '즐겨찾기 해제' : '즐겨찾기'}
+              </Button>
               <Button variant="outline" className="border-gray-300">
                 <Camera className="mr-2 h-4 w-4" />
                 사진
