@@ -1,16 +1,26 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, MapPin, Star, Clock, Users, ArrowLeft } from 'lucide-react';
+import { Search, MapPin, Star, Clock, Users, ArrowLeft, Filter, X, Percent, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Slider } from '@/components/ui/slider';
+import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const Restaurants = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [showFilters, setShowFilters] = useState(false);
+  
+  // Filter states
+  const [ratingFilter, setRatingFilter] = useState([0]);
+  const [waitingTimeFilter, setWaitingTimeFilter] = useState('전체');
+  const [availableSeatsOnly, setAvailableSeatsOnly] = useState(false);
+  const [couponOnly, setCouponOnly] = useState(false);
 
   const categories = ['전체', '한식', '중식', '일식', '양식', '카페', '술집', '아시안'];
+  const waitingTimeOptions = ['전체', '없음', '10분 이하', '20분 이하', '30분 이하'];
 
   const restaurants = [
     {
@@ -25,7 +35,10 @@ const Restaurants = () => {
       availableSeats: 3,
       image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=250&fit=crop',
       priceRange: '₩15,000 - ₩25,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: true,
+      couponText: '20% 할인',
+      couponType: 'discount'
     },
     {
       id: 2,
@@ -39,7 +52,8 @@ const Restaurants = () => {
       availableSeats: 7,
       image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=250&fit=crop',
       priceRange: '₩25,000 - ₩40,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: false
     },
     {
       id: 3,
@@ -53,7 +67,10 @@ const Restaurants = () => {
       availableSeats: 12,
       image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=250&fit=crop',
       priceRange: '₩8,000 - ₩15,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: true,
+      couponText: '음료 1+1',
+      couponType: 'promotion'
     },
     {
       id: 4,
@@ -67,7 +84,8 @@ const Restaurants = () => {
       availableSeats: 0,
       image: 'https://images.unsplash.com/photo-1579027989054-b72d69ae8b5c?w=400&h=250&fit=crop',
       priceRange: '₩30,000 - ₩50,000',
-      openNow: false
+      openNow: false,
+      hasCoupon: false
     },
     {
       id: 5,
@@ -81,7 +99,10 @@ const Restaurants = () => {
       availableSeats: 8,
       image: 'https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=400&h=250&fit=crop',
       priceRange: '₩18,000 - ₩30,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: true,
+      couponText: '첫 방문 15% 할인',
+      couponType: 'discount'
     },
     {
       id: 6,
@@ -95,7 +116,8 @@ const Restaurants = () => {
       availableSeats: 5,
       image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop',
       priceRange: '₩35,000 - ₩55,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: false
     },
     {
       id: 7,
@@ -109,7 +131,8 @@ const Restaurants = () => {
       availableSeats: 15,
       image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=250&fit=crop',
       priceRange: '₩12,000 - ₩18,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: false
     },
     {
       id: 8,
@@ -123,7 +146,10 @@ const Restaurants = () => {
       availableSeats: 9,
       image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=250&fit=crop',
       priceRange: '₩15,000 - ₩25,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: true,
+      couponText: '브런치 세트 10% 할인',
+      couponType: 'discount'
     },
     {
       id: 9,
@@ -137,7 +163,8 @@ const Restaurants = () => {
       availableSeats: 6,
       image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=250&fit=crop',
       priceRange: '₩20,000 - ₩35,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: false
     },
     {
       id: 10,
@@ -151,7 +178,10 @@ const Restaurants = () => {
       availableSeats: 11,
       image: 'https://images.unsplash.com/photo-1559847844-d558cfc41b1d?w=400&h=250&fit=crop',
       priceRange: '₩22,000 - ₩38,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: true,
+      couponText: '런치 메뉴 25% 할인',
+      couponType: 'discount'
     },
     {
       id: 11,
@@ -165,7 +195,8 @@ const Restaurants = () => {
       availableSeats: 0,
       image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=250&fit=crop',
       priceRange: '₩80,000 - ₩120,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: false
     },
     {
       id: 12,
@@ -179,16 +210,56 @@ const Restaurants = () => {
       availableSeats: 18,
       image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=250&fit=crop',
       priceRange: '₩20,000 - ₩35,000',
-      openNow: true
+      openNow: true,
+      hasCoupon: true,
+      couponText: '피자 2판 주문시 콜라 무료',
+      couponType: 'promotion'
     }
   ];
+
+  const getWaitingTimeInMinutes = (waitingTime: string) => {
+    if (waitingTime === '없음') return 0;
+    const match = waitingTime.match(/(\d+)분/);
+    return match ? parseInt(match[1]) : 0;
+  };
 
   const filteredRestaurants = restaurants.filter(restaurant => {
     const matchesSearch = restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          restaurant.category.includes(searchTerm);
     const matchesCategory = selectedCategory === '전체' || restaurant.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    const matchesRating = restaurant.rating >= ratingFilter[0];
+    
+    let matchesWaitingTime = true;
+    if (waitingTimeFilter !== '전체') {
+      const restaurantWaitingMinutes = getWaitingTimeInMinutes(restaurant.waitingTime);
+      switch (waitingTimeFilter) {
+        case '없음':
+          matchesWaitingTime = restaurantWaitingMinutes === 0;
+          break;
+        case '10분 이하':
+          matchesWaitingTime = restaurantWaitingMinutes <= 10;
+          break;
+        case '20분 이하':
+          matchesWaitingTime = restaurantWaitingMinutes <= 20;
+          break;
+        case '30분 이하':
+          matchesWaitingTime = restaurantWaitingMinutes <= 30;
+          break;
+      }
+    }
+    
+    const matchesAvailableSeats = !availableSeatsOnly || restaurant.availableSeats > 0;
+    const matchesCoupon = !couponOnly || restaurant.hasCoupon;
+    
+    return matchesSearch && matchesCategory && matchesRating && matchesWaitingTime && matchesAvailableSeats && matchesCoupon;
   });
+
+  const resetFilters = () => {
+    setRatingFilter([0]);
+    setWaitingTimeFilter('전체');
+    setAvailableSeatsOnly(false);
+    setCouponOnly(false);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -233,7 +304,7 @@ const Restaurants = () => {
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mb-4">
             {categories.map((category) => (
               <Button
                 key={category}
@@ -249,6 +320,99 @@ const Restaurants = () => {
               </Button>
             ))}
           </div>
+
+          {/* Filter Toggle Button */}
+          <div className="flex justify-between items-center mb-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="border-gray-300 text-gray-600"
+            >
+              <Filter className="mr-2 h-4 w-4" />
+              필터 {showFilters ? '닫기' : '열기'}
+            </Button>
+            
+            {(ratingFilter[0] > 0 || waitingTimeFilter !== '전체' || availableSeatsOnly || couponOnly) && (
+              <Button
+                variant="ghost"
+                onClick={resetFilters}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="mr-1 h-4 w-4" />
+                필터 초기화
+              </Button>
+            )}
+          </div>
+
+          {/* Advanced Filters */}
+          {showFilters && (
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="text-lg">상세 필터</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Rating Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    최소 별점: {ratingFilter[0]}점 이상
+                  </label>
+                  <Slider
+                    value={ratingFilter}
+                    onValueChange={setRatingFilter}
+                    max={5}
+                    min={0}
+                    step={0.1}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>0점</span>
+                    <span>5점</span>
+                  </div>
+                </div>
+
+                {/* Waiting Time Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    웨이팅 시간
+                  </label>
+                  <Select value={waitingTimeFilter} onValueChange={setWaitingTimeFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="웨이팅 시간 선택" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {waitingTimeOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Available Seats Filter */}
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-gray-700">
+                    잔여석 있는 곳만 보기
+                  </label>
+                  <Switch
+                    checked={availableSeatsOnly}
+                    onCheckedChange={setAvailableSeatsOnly}
+                  />
+                </div>
+
+                {/* Coupon Filter */}
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-gray-700">
+                    할인/쿠폰 있는 곳만 보기
+                  </label>
+                  <Switch
+                    checked={couponOnly}
+                    onCheckedChange={setCouponOnly}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         {/* Results Header */}
@@ -281,6 +445,18 @@ const Restaurants = () => {
                     {restaurant.distance}
                   </span>
                 </div>
+                {restaurant.hasCoupon && (
+                  <div className="absolute bottom-3 left-3">
+                    <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs flex items-center">
+                      {restaurant.couponType === 'discount' ? (
+                        <Percent className="h-3 w-3 mr-1" />
+                      ) : (
+                        <Tag className="h-3 w-3 mr-1" />
+                      )}
+                      {restaurant.couponText}
+                    </span>
+                  </div>
+                )}
               </div>
               
               <CardHeader className="pb-3">
@@ -343,7 +519,7 @@ const Restaurants = () => {
               <Search className="h-8 w-8 text-gray-400" />
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">검색 결과가 없습니다</h3>
-            <p className="text-gray-600">다른 키워드로 검색해보세요</p>
+            <p className="text-gray-600">다른 키워드로 검색하거나 필터를 조정해보세요</p>
           </div>
         )}
       </div>
