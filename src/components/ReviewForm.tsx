@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Star, Link as LinkIcon, Camera, X } from 'lucide-react';
+import { Star, Link as LinkIcon, Camera, X, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -60,6 +60,18 @@ const ReviewForm = ({ onSubmit, onCancel, userType = 'user' }: ReviewFormProps) 
             </span>
           )}
         </CardTitle>
+        
+        {/* Reward Message */}
+        <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-lg p-4 mt-4">
+          <div className="flex items-center text-orange-700">
+            <Gift className="h-5 w-5 mr-2" />
+            <span className="font-medium">리뷰 작성 리워드</span>
+          </div>
+          <p className="text-sm text-orange-600 mt-1">
+            리뷰를 작성하시면 포인트 적립과 특별 할인 쿠폰을 드려요! 
+            {userType === 'blogger' && ' 블로거 회원은 추가 혜택이 있습니다.'}
+          </p>
+        </div>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -162,7 +174,7 @@ const ReviewForm = ({ onSubmit, onCancel, userType = 'user' }: ReviewFormProps) 
           {/* Submit Buttons */}
           <div className="flex gap-3 pt-4">
             <Button type="submit" className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white">
-              리뷰 등록
+              리뷰 등록하고 리워드 받기
             </Button>
             <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
               취소
