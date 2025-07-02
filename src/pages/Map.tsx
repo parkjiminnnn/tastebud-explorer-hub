@@ -8,6 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 const Map = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('전체');
+
+  const categories = ['전체', '한식', '중식', '일식', '양식', '카페', '술집', '아시안'];
 
   // Expanded mock restaurant data with coordinates
   const restaurants = [
@@ -98,7 +101,7 @@ const Map = () => {
       address: '서울시 중구 명동',
       distance: '1.8km',
       availableSeats: 15,
-      lat: 37.5636,
+      lat: 37.5703,
       lng: 126.9834,
       image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=300&h=200&fit=crop'
     },
@@ -169,6 +172,15 @@ const Map = () => {
     }
   ];
 
+  // 필터링된 식당 목록
+  const filteredRestaurants = restaurants.filter(restaurant => {
+    const matchesSearch = restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         restaurant.category.includes(searchTerm);
+    const matchesCategory = selectedCategory === '전체' || restaurant.category === selectedCategory;
+    
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -212,9 +224,38 @@ const Map = () => {
               />
             </div>
 
+            {/* Category Filter */}
+            <div className="mb-4">
+              <h3 className="text-sm font-medium text-gray-700 mb-3">카테고리</h3>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(category)}
+                    className={`${
+                      selectedCategory === category
+                        ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white'
+                        : 'border-gray-300 text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Results Count */}
+            <div className="mb-4">
+              <p className="text-sm text-gray-600">
+                {filteredRestaurants.length}개의 식당이 있습니다
+              </p>
+            </div>
+
             {/* Restaurant List */}
             <div className="space-y-4">
-              {restaurants.map((restaurant) => (
+              {filteredRestaurants.map((restaurant) => (
                 <Card 
                   key={restaurant.id} 
                   className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
@@ -252,6 +293,17 @@ const Map = () => {
                 </Card>
               ))}
             </div>
+
+            {/* No results message */}
+            {filteredRestaurants.length === 0 && (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="h-8 w-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">검색 결과가 없습니다</h3>
+                <p className="text-gray-600">다른 키워드나 카테고리를 선택해보세요</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -268,9 +320,9 @@ const Map = () => {
             {/* Map overlay with gradient */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
 
-            {/* Mock Map Markers */}
+            {/* Mock Map Markers - 필터링된 식당만 표시 */}
             <div className="absolute inset-0">
-              {restaurants.map((restaurant, index) => (
+              {filteredRestaurants.map((restaurant, index) => (
                 <div
                   key={restaurant.id}
                   className={`absolute w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transform -translate-x-1/2 -translate-y-1/2 shadow-lg ${
@@ -302,6 +354,14 @@ const Map = () => {
                   <span>선택된 식당</span>
                 </div>
               </div>
+              
+              {/* 선택된 카테고리 표시 */}
+              {selectedCategory !== '전체' && (
+                <div className="mt-3 pt-3 border-t">
+                  <div className="text-xs text-gray-600">필터:</div>
+                  <div className="text-sm font-medium text-orange-600">{selectedCategory}</div>
+                </div>
+              )}
             </div>
 
             {/* Selected Restaurant Info */}
