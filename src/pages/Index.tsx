@@ -1,19 +1,19 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, User, Camera, Search, MapPin, Star } from 'lucide-react';
+import { Users, User, Search, MapPin, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Index = () => {
   const userTypes = [
     {
-      id: 'office-worker',
-      title: '직장인',
-      description: '빠른 예약과 실시간 테이블 정보로 효율적인 식사',
+      id: 'consumer',
+      title: '소비자',
+      description: '맛집 탐색, 예약 관리, 리뷰 작성으로 완벽한 외식 경험',
       icon: Users,
       color: 'bg-blue-500 hover:bg-blue-600',
-      features: ['실시간 테이블 확인', '빠른 예약', '웨이팅 정보']
+      features: ['실시간 테이블 확인', '빠른 예약', '맛집 탐색', '리뷰 작성', '컬렉션 관리']
     },
     {
       id: 'business-owner',
@@ -22,14 +22,6 @@ const Index = () => {
       icon: User,
       color: 'bg-green-500 hover:bg-green-600',
       features: ['예약 관리', '리뷰 확인', '방문자 통계']
-    },
-    {
-      id: 'blogger',
-      title: '맛집 블로거',
-      description: '맛집 탐색과 리뷰 작성으로 미식 경험 공유',
-      icon: Camera,
-      color: 'bg-purple-500 hover:bg-purple-600',
-      features: ['맛집 탐색', '리뷰 작성', '컬렉션 관리']
     }
   ];
 
@@ -66,7 +58,7 @@ const Index = () => {
             당신만의 <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">맛집 경험</span>을 만들어보세요
           </h1>
           <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-            직장인부터 자영업자, 맛집 블로거까지. 각자의 니즈에 맞춘 특별한 맛집 플랫폼을 경험해보세요.
+            소비자부터 자영업자까지. 각자의 니즈에 맞춘 특별한 맛집 플랫폼을 경험해보세요.
           </p>
           
           {/* Quick Actions */}
@@ -95,7 +87,7 @@ const Index = () => {
             <p className="text-lg text-gray-600">각 사용자 유형에 특화된 기능을 제공합니다</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {userTypes.map((type) => {
               const IconComponent = type.icon;
               return (

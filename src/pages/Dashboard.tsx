@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Users, User, Camera, Star, Calendar, BarChart, Clock, Edit3 } from 'lucide-react';
@@ -34,23 +35,29 @@ const Dashboard = () => {
   const [editForm, setEditForm] = useState({ date: '', time: '', people: '' });
 
   const userTypes = {
-    'office-worker': {
-      title: '일반인 대시보드',
+    'consumer': {
+      title: '소비자 대시보드',
       icon: Users,
       color: 'bg-blue-500',
-      description: '빠른 예약과 실시간 정보를 확인하세요'
+      description: '맛집 탐색, 예약 관리, 리뷰 작성으로 완벽한 외식 경험'
+    },
+    'office-worker': {
+      title: '소비자 대시보드',
+      icon: Users,
+      color: 'bg-blue-500',
+      description: '맛집 탐색, 예약 관리, 리뷰 작성으로 완벽한 외식 경험'
+    },
+    'blogger': {
+      title: '소비자 대시보드',
+      icon: Users,
+      color: 'bg-blue-500',
+      description: '맛집 탐색, 예약 관리, 리뷰 작성으로 완벽한 외식 경험'
     },
     'business-owner': {
       title: '자영업자 대시보드',
       icon: User,
       color: 'bg-green-500',
       description: '매장 관리와 고객 소통을 효율적으로'
-    },
-    'blogger': {
-      title: '블로거 대시보드',
-      icon: Camera,
-      color: 'bg-purple-500',
-      description: '맛집 탐색과 리뷰 작성으로 컨텐츠 제작'
     }
   };
 
@@ -94,8 +101,8 @@ const Dashboard = () => {
     );
   }
 
-  // 각 사용자 타입별 컨텐츠
-  const renderOfficeWorkerContent = () => (
+  // 소비자 대시보드 컨텐츠 (기존 일반인 + 블로거 기능 통합)
+  const renderConsumerContent = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <Card>
         <CardHeader>
@@ -201,6 +208,56 @@ const Dashboard = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
+            <Camera className="mr-2 h-5 w-5 text-blue-500" />
+            내 리뷰 활동
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="flex justify-between">
+              <span>총 리뷰 수</span>
+              <span className="font-bold text-blue-600">24개</span>
+            </div>
+            <div className="flex justify-between">
+              <span>이번 달</span>
+              <span className="font-medium">5개</span>
+            </div>
+            <div className="flex justify-between">
+              <span>평균 별점</span>
+              <span className="font-medium">4.2</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Star className="mr-2 h-5 w-5 text-blue-500" />
+            내 컬렉션
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            <div className="p-2 border rounded">
+              <div className="font-medium">강남 맛집 모음</div>
+              <div className="text-sm text-gray-600">8개 식당</div>
+            </div>
+            <div className="p-2 border rounded">
+              <div className="font-medium">데이트 코스</div>
+              <div className="text-sm text-gray-600">5개 식당</div>
+            </div>
+            <div className="p-2 border rounded">
+              <div className="font-medium">혼밥 추천</div>
+              <div className="text-sm text-gray-600">3개 식당</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
             <Star className="mr-2 h-5 w-5 text-blue-500" />
             최근 방문 기록
           </CardTitle>
@@ -220,6 +277,24 @@ const Dashboard = () => {
                 <Star className="h-4 w-4 text-yellow-400 fill-current" />
                 <span className="ml-1 text-sm">4.3</span>
               </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Camera className="mr-2 h-5 w-5 text-blue-500" />
+            최근 방문 예정
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="p-3 border rounded-lg">
+              <div className="font-medium">신상 카페 탐방</div>
+              <div className="text-sm text-gray-600">홍대 신규 오픈</div>
+              <div className="text-xs text-blue-600 mt-1">블로그 포스팅 예정</div>
             </div>
           </div>
         </CardContent>
@@ -294,86 +369,14 @@ const Dashboard = () => {
     </div>
   );
 
-  const renderBloggerContent = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Camera className="mr-2 h-5 w-5 text-purple-500" />
-            내 리뷰 활동
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span>총 리뷰 수</span>
-              <span className="font-bold text-purple-600">24개</span>
-            </div>
-            <div className="flex justify-between">
-              <span>이번 달</span>
-              <span className="font-medium">5개</span>
-            </div>
-            <div className="flex justify-between">
-              <span>평균 별점</span>
-              <span className="font-medium">4.2</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Star className="mr-2 h-5 w-5 text-purple-500" />
-            내 컬렉션
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <div className="p-2 border rounded">
-              <div className="font-medium">강남 맛집 모음</div>
-              <div className="text-sm text-gray-600">8개 식당</div>
-            </div>
-            <div className="p-2 border rounded">
-              <div className="font-medium">데이트 코스</div>
-              <div className="text-sm text-gray-600">5개 식당</div>
-            </div>
-            <div className="p-2 border rounded">
-              <div className="font-medium">혼밥 추천</div>
-              <div className="text-sm text-gray-600">3개 식당</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Users className="mr-2 h-5 w-5 text-purple-500" />
-            최근 방문 예정
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            <div className="p-3 border rounded-lg">
-              <div className="font-medium">신상 카페 탐방</div>
-              <div className="text-sm text-gray-600">홍대 신규 오픈</div>
-              <div className="text-xs text-purple-600 mt-1">블로그 포스팅 예정</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
   const renderContent = () => {
     switch (userType) {
+      case 'consumer':
       case 'office-worker':
-        return renderOfficeWorkerContent();
+      case 'blogger':
+        return renderConsumerContent();
       case 'business-owner':
         return renderBusinessOwnerContent();
-      case 'blogger':
-        return renderBloggerContent();
       default:
         return <div>잘못된 사용자 타입입니다.</div>;
     }
