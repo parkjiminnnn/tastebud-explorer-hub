@@ -1,16 +1,41 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Users, User, Camera, Star, Calendar, BarChart, Clock } from 'lucide-react';
+import { ArrowLeft, Users, User, Camera, Star, Calendar, BarChart, Clock, Edit3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
 const Dashboard = () => {
   const { userType } = useParams();
+  const { toast } = useToast();
+  const [reservations, setReservations] = useState([
+    {
+      id: 1,
+      restaurant: '맛있는 한식당',
+      date: '오늘',
+      time: '12:30',
+      people: 2,
+      status: '예약 확정'
+    },
+    {
+      id: 2,
+      restaurant: '이탈리안 레스토랑',
+      date: '내일',
+      time: '19:00',
+      people: 4,
+      status: '예약 대기'
+    }
+  ]);
+
+  const [editingReservation, setEditingReservation] = useState(null);
+  const [editForm, setEditForm] = useState({ date: '', time: '', people: '' });
 
   const userTypes = {
     'office-worker': {
-      title: '직장인 대시보드',
+      title: '일반인 대시보드',
       icon: Users,
       color: 'bg-blue-500',
       description: '빠른 예약과 실시간 정보를 확인하세요'
@@ -31,6 +56,30 @@ const Dashboard = () => {
 
   const currentUser = userTypes[userType as keyof typeof userTypes];
   const IconComponent = currentUser?.icon || Users;
+
+  const handleEditReservation = (reservation) => {
+    setEditingReservation(reservation);
+    setEditForm({
+      date: reservation.date,
+      time: reservation.time,
+      people: reservation.people.toString()
+    });
+  };
+
+  const handleSaveReservation = () => {
+    setReservations(prev => prev.map(res => 
+      res.id === editingReservation.id 
+        ? { ...res, date: editForm.date, time: editForm.time, people: parseInt(editForm.people) }
+        : res
+    ));
+    
+    toast({
+      title: "예약이 수정되었습니다",
+      description: `${editingReservation.restaurant} 예약이 성공적으로 변경되었습니다.`,
+    });
+    
+    setEditingReservation(null);
+  };
 
   if (!currentUser) {
     return (
@@ -57,16 +106,69 @@ const Dashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            <div className="p-3 border rounded-lg">
-              <div className="font-medium">맛있는 한식당</div>
-              <div className="text-sm text-gray-600">오늘 12:30 - 2명</div>
-              <div className="text-xs text-green-600 mt-1">예약 확정</div>
-            </div>
-            <div className="p-3 border rounded-lg">
-              <div className="font-medium">이탈리안 레스토랑</div>
-              <div className="text-sm text-gray-600">내일 19:00 - 4명</div>
-              <div className="text-xs text-blue-600 mt-1">예약 대기</div>
-            </div>
+            {reservations.map((reservation) => (
+              <div key={reservation.id} className="p-3 border rounded-lg">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <div className="font-medium">{reservation.restaurant}</div>
+                    <div className="text-sm text-gray-600">{reservation.date} {reservation.time} - {reservation.people}명</div>
+                    <div className={`text-xs mt-1 ${reservation.status === '예약 확정' ? 'text-green-600' : 'text-blue-600'}`}>
+                      {reservation.status}
+                    </div>
+                  </div>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => handleEditReservation(reservation)}
+                      >
+                        <Edit3 className="h-4 w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>예약 수정</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="restaurant">식당</Label>
+                          <Input id="restaurant" value={reservation.restaurant} disabled />
+                        </div>
+                        <div>
+                          <Label htmlFor="date">날짜</Label>
+                          <Input 
+                            id="date" 
+                            value={editForm.date}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, date: e.target.value }))}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="time">시간</Label>
+                          <Input 
+                            id="time" 
+                            value={editForm.time}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, time: e.target.value }))}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="people">인원</Label>
+                          <Input 
+                            id="people" 
+                            type="number"
+                            value={editForm.people}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, people: e.target.value }))}
+                          />
+                        </div>
+                        <Button onClick={handleSaveReservation} className="w-full">
+                          저장
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
@@ -337,15 +439,17 @@ const Dashboard = () => {
               </Card>
             </Link>
             
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <Star className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="font-semibold text-gray-900">리뷰 작성</h3>
-                <p className="text-sm text-gray-600 mt-1">방문한 식당 리뷰 남기기</p>
-              </CardContent>
-            </Card>
+            {userType !== 'business-owner' && (
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                    <Star className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900">리뷰 작성</h3>
+                  <p className="text-sm text-gray-600 mt-1">방문한 식당 리뷰 남기기</p>
+                </CardContent>
+              </Card>
+            )}
             
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardContent className="p-6 text-center">
